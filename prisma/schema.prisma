@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                String          @id @default(uuid())
+  eMail             String          @unique
+  firstName         String
+  lastName          String
+  pseudo            String
+  password          String
+  picture           String
+  geolocalisationId Int
+  geolocalisation   Geolocalisation @relation(fields: [geolocalisationId], references: [id])
+  friend            Friend[]
+  message           Message[]
+  chat              Chat[]
+}
+
+model Geolocalisation {
+  id         Int     @id @default(autoincrement())
+  coordonate String
+  display    Boolean
+  user       User[]
+}
+
+model Friend {
+  id         Int     @id @default(autoincrement())
+  user       User[]
+  isAccepted Boolean
+}
+
+model Chat {
+  id      Int       @id @default(autoincrement())
+  user    User[]
+  message Message[]
+}
+
+model Message {
+  id     Int    @id @default(autoincrement())
+  body   String
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  chatId Int
+  chat   Chat   @relation(fields: [chatId], references: [id])
+}
