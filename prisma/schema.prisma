@@ -45,10 +45,11 @@ model Chat {
 }
 
 model Message {
-  id     Int    @id @default(autoincrement())
+  id     Int     @id @default(autoincrement())
   body   String
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  isRead Boolean
+  user   User    @relation(fields: [userId], references: [id])
   chatId Int
-  chat   Chat   @relation(fields: [chatId], references: [id])
+  chat   Chat    @relation(fields: [chatId], references: [id])
 }
