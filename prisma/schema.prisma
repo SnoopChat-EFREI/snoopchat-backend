@@ -15,7 +15,7 @@ model User {
   eMail             String          @unique
   firstName         String
   lastName          String
-  pseudo            String
+  pseudo            String          @unique
   password          String
   picture           String
   geolocalisationId Int
