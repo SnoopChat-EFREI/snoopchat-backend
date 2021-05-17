@@ -1,9 +1,9 @@
-import { Router } from 'express'
+import { Router } from "express";
+import { authenticateToken } from "../middlewares/auth";
+import api from "./api";
 
-import api from './api'
+const routes = Router();
 
-const routes = Router()
+routes.use("/api", authenticateToken, api);
 
-routes.use('/api', api)
-
-export default routes
+export default routes;

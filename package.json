@@ -7,7 +7,6 @@
     "build:application": "yarn babel src/ --out-dir .dist/ --extensions \".ts\"",
     "format": "yarn prettier --write \"src/**/*\""
   },
-
   "devDependencies": {
     "@babel/cli": "^7.13.14",
     "@babel/core": "^7.13.14",
@@ -24,8 +23,10 @@
   },
   "dependencies": {
     "@prisma/client": "2.20.1",
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "dotenv": "^8.6.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
   }
 }

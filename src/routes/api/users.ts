@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { generateAccessToken } from "../../middlewares/auth";
 
 const api = Router();
 
@@ -161,11 +162,13 @@ api.put("/:id", async ({ prisma, params, body }, response) => {
   }
 });
 
-api.get("/me/chats", async ({ prisma }, response) => {
+api.get("/me/chats", async ({ prisma, user }, response) => {
   try {
+    console.log(user);
+
     const { chat } = await prisma.user.findUnique({
       where: {
-        id: "6063ee84-55f3-4483-9eb1-d5fd98f4060c",
+        id: user.id,
       },
       select: {
         chat: true,
