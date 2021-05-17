@@ -61,61 +61,6 @@ api.delete("/:id", async ({ prisma, params }, response) => {
   }
 });
 
-// Create One user :: [POST] > /api/users
-api.post("/", async ({ prisma, body }, response) => {
-  // Checking mandatory fields
-  const missingFields = Object.keys(body).filter(
-    (field) =>
-      ![
-        "eMail",
-        "firstName",
-        "lastName",
-        "pseudo",
-        "password",
-        "picture",
-        "geolocalisationId",
-      ].includes(field)
-  );
-
-  if (missingFields.length > 0) {
-    return response.status(400).json({
-      error: `Missing fields: ${missingFields.join()}`,
-    });
-  }
-
-  try {
-    const {
-      eMail,
-      firstName,
-      lastName,
-      pseudo,
-      password,
-      picture,
-      geolocalisationId,
-    } = body;
-
-    const user = await prisma.user.create({
-      data: {
-        eMail,
-        firstName,
-        lastName,
-        pseudo,
-        password,
-        picture,
-        geolocalisationId,
-      },
-    });
-
-    response.status(200).json({
-      data: { user },
-    });
-  } catch (error) {
-    response.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
 // Update One user :: [PUT] > /api/users/:id
 api.put("/:id", async ({ prisma, params, body }, response) => {
   const user = await prisma.user.findUnique({

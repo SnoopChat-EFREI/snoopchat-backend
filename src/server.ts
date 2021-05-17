@@ -44,7 +44,11 @@ export function launch(port: number): void {
       if (!(await compare(body.password, password))) {
         return res.status(401).json({ error: "wrong password" });
       }
-      const token = generateAccessToken(body.username, user.id);
+      const token = generateAccessToken(
+        body.username,
+        user.id,
+        user.geolocalisationId
+      );
       res.status(200).json({
         token,
       });
@@ -70,15 +74,29 @@ export function launch(port: number): void {
           picture: "null",
         },
       });
+      const userCreated = await prisma.user.findUnique({
+        where: {
+          pseudo,
+        },
+      });
+      console.log(":: NOUV USER : ", userCreated);
 
-      //const user = await prisma.user.findUnique({ where: { pseudo } });
+      const geo = await prisma.geolocalisation.create({
+        data: {
+          coordonate: "",
+          display: true,
+          user: {
+            connect: { id: userCreated.id },
+          },
+        },
+      });
+      console.log(geo);
+
       res.status(200).end();
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code == "P2002") {
-          res
-            .status(401)
-            .json({ error: error.meta.target[0] + " already used" });
+          res.status(401).json({ error: "username or email already used" });
         }
       }
       res.status(500).end();
