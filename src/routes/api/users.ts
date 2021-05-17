@@ -162,13 +162,11 @@ api.put("/:id", async ({ prisma, params, body }, response) => {
   }
 });
 
-api.get("/me/chats", async ({ prisma, user }, response) => {
+api.get("/me/chats", async (req, response) => {
   try {
-    console.log(user);
-
-    const { chat } = await prisma.user.findUnique({
+    const { chat } = await req.prisma.user.findUnique({
       where: {
-        id: user.id,
+        id: req.user.id,
       },
       select: {
         chat: true,
