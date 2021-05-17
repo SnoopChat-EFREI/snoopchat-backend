@@ -76,7 +76,7 @@ export function launch(port: number): void {
       });
       const userCreated = await prisma.user.findUnique({
         where: {
-          pseudo,
+          pseudo, 
         },
       });
       console.log(":: NOUV USER : ", userCreated);

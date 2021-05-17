@@ -3,19 +3,20 @@ import { Router } from "express";
 const api = Router();
 
 // Get One geolocalisation by ID :: [GET] > /api/geolocalisations/:id
-api.get("/:id", async ({ prisma, params }, response) => {
+api.get("/", async ({ prisma, user }, response) => {
   try {
     const geolocalisation = await prisma.geolocalisation.findUnique({
-      where: { id: Number(params.id) },
+      where: { id: user.locId },
     });
     if (!geolocalisation) {
       return response.status(400).json({
-        error: `Unknown resource with id:${params.id}`,
+        error: `Unknown resource`,
       });
     }
 
+    const { coordonate } = geolocalisation;
     response.status(200).json({
-      data: { geolocalisation },
+      data: { coordonate },
     });
   } catch (error) {
     response.status(400).json({
