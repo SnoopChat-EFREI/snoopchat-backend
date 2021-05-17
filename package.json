@@ -1,4 +1,10 @@
 {
+  "name" : "snoopchat",
+  "description": "vraiment une application monstrueuse",
+  "version": "1.0.0",
+  "engines": {
+    "node": "14.15.5"
+  },
   "main": ".dist/main.js",
   "scripts": {
     "dev": "yarn nodemon",
