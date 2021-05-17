@@ -8,6 +8,6 @@ const api = Router();
 
 api.use("/users", users);
 api.use("/geolocalisations", geolocalisations);
-api.use("/chats", chats);
+//api.use("/chats", chats);
 
 export default api;

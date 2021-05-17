@@ -161,4 +161,25 @@ api.put("/:id", async ({ prisma, params, body }, response) => {
   }
 });
 
+api.get("/me/chats", async ({ prisma }, response) => {
+  try {
+    const { chat } = await prisma.user.findUnique({
+      where: {
+        id: "6063ee84-55f3-4483-9eb1-d5fd98f4060c",
+      },
+      select: {
+        chat: true,
+      },
+    });
+
+    response.status(200).json({
+      data: { chat },
+    });
+  } catch (error) {
+    response.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
 export default api;

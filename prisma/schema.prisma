@@ -11,15 +11,15 @@ generator client {
 }
 
 model User {
-  id                String          @id @default(uuid())
-  eMail             String          @unique
+  id                String           @id @default(uuid())
+  eMail             String           @unique
   firstName         String
   lastName          String
-  pseudo            String          @unique
+  pseudo            String           @unique
   password          String
   picture           String
-  geolocalisationId Int
-  geolocalisation   Geolocalisation @relation(fields: [geolocalisationId], references: [id])
+  geolocalisationId Int?
+  geolocalisation   Geolocalisation? @relation(fields: [geolocalisationId], references: [id])
   friend            Friend[]
   message           Message[]
   chat              Chat[]

@@ -2,21 +2,6 @@ import { Router } from "express";
 
 const api = Router();
 
-// Get All chats :: [GET] > /api/chats
-api.get("/", async ({ prisma }, response) => {
-  try {
-    const chats = await prisma.chat.findMany();
-
-    response.status(200).json({
-      data: { chats },
-    });
-  } catch (error) {
-    response.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
 // Get One chat by ID :: [GET] > /api/chats/:id
 api.get("/:id", async ({ prisma, params }, response) => {
   try {
