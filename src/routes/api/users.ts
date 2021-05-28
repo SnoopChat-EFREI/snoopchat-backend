@@ -6,7 +6,15 @@ const api = Router();
 // Get All Users :: [GET] > /api/users
 api.get("/", async ({ prisma }, response) => {
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+      include: {
+        friend: {
+          include:{
+            user:true
+          }
+        },
+      },
+    });
 
     response.status(200).json({
       data: { users },
@@ -21,7 +29,16 @@ api.get("/", async ({ prisma }, response) => {
 // Get One user by ID :: [GET] > /api/users/:id
 api.get("/one/", async ({ prisma, user }, response) => {
   try {
-    const userFind = await prisma.user.findUnique({ where: { id: user.id } });
+    const userFind = await prisma.user.findUnique({
+      where: { id: user.id },
+      include: {
+        friend: {
+          include:{
+            user:true
+          }
+        },
+      },
+    });
     if (!userFind) {
       return response.status(400).json({
         error: `Unknown resource`,

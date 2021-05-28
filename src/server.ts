@@ -92,6 +92,15 @@ export function launch(port: number): void {
       });
       console.log(geo);
 
+      const friend = await prisma.friend.create({
+        data: {
+          user: {
+            connect: { id: userCreated.id },
+          },
+        },
+      });
+      console.log(friend);
+
       res.status(200).end();
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {

@@ -20,7 +20,8 @@ model User {
   picture           String
   geolocalisationId Int?
   geolocalisation   Geolocalisation? @relation(fields: [geolocalisationId], references: [id])
-  friend            Friend[]
+  friendId          Int?
+  friend            Friend?          @relation(fields: [friendId], references: [id])
   message           Message[]
   chat              Chat[]
 }
@@ -35,7 +36,6 @@ model Geolocalisation {
 model Friend {
   id         Int     @id @default(autoincrement())
   user       User[]
-  isAccepted Boolean
 }
 
 model Chat {
