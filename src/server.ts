@@ -9,7 +9,7 @@ import {
   hashPassword,
   authenticateToken,
 } from "./middlewares/auth";
-import { mailer } from "./helpers/mailjet";
+/* import { mailer } from "./helpers/mailjet"; */
 import routes from "./routes";
 import { injectPrisma } from "./middlewares/inject-prisma";
 
@@ -91,13 +91,17 @@ export function launch(port: number): void {
           },
         },
       });
-      mailer
-        .then((result) => {
-          console.log(result.body);
-        })
-        .catch((err) => {
-          console.log(err.statusCode);
-        });
+      console.log(geo);
+
+      const friend = await prisma.friend.create({
+        data: {
+          user: {
+            connect: { id: userCreated.id },
+          },
+        },
+      });
+      console.log(friend);
+
       res.status(200).end();
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
