@@ -9,6 +9,7 @@ import {
   hashPassword,
   authenticateToken,
 } from "./middlewares/auth";
+import { mailer } from "./helpers/mailjet";
 import routes from "./routes";
 import { injectPrisma } from "./middlewares/inject-prisma";
 
@@ -76,7 +77,7 @@ export function launch(port: number): void {
       });
       const userCreated = await prisma.user.findUnique({
         where: {
-          pseudo, 
+          pseudo,
         },
       });
       console.log(":: NOUV USER : ", userCreated);
@@ -90,8 +91,13 @@ export function launch(port: number): void {
           },
         },
       });
-      console.log(geo);
-
+      mailer
+        .then((result) => {
+          console.log(result.body);
+        })
+        .catch((err) => {
+          console.log(err.statusCode);
+        });
       res.status(200).end();
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
