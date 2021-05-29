@@ -150,6 +150,7 @@ api.get("/addfriend/:pseudo", async ({ prisma, params, user }, response) => {
       },
       select: {
         id: true,
+        friendId: true,
       },
     });
 
@@ -160,6 +161,17 @@ api.get("/addfriend/:pseudo", async ({ prisma, params, user }, response) => {
         user: {
           connect: {
               id: user2.id
+          },
+        },
+      },
+    });
+
+    prisma.friend.update({
+      where: { id: user2.friendId },
+      data: {
+        user: {
+          connect: {
+              id: user.id
           },
         },
       },
