@@ -146,4 +146,8 @@ api.get("/me/chats", async (req, response) => {
   }
 });
 
+api.get("/verify-token", (_, res) => {
+  res.status(201).end();
+});
+
 export default api;
