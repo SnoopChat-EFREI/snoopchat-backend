@@ -133,4 +133,48 @@ api.put("/:id", async ({ prisma, params, body }, response) => {
   }
 });
 
+api.get("/addfriend/:pseudo", async ({ prisma, params, user }, response) => {
+  try {
+    const user1 = await prisma.user.findUnique({
+      where: {
+        id: user.id,
+      },
+      select: {
+        friendId: true,
+      },
+    });
+
+    const user2 = await prisma.user.findUnique({
+      where: {
+        pseudo: params.pseudo,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    
+    const friend = await prisma.friend.update({
+      where: { id: user1.friendId },
+      data: {
+        user: {
+          connect: {
+              id: user2.id
+          },
+        },
+      },
+    });
+
+    response.status(201).json({
+      data: { friend },
+    });
+
+  } catch (error) {
+    response.status(400).json({
+      error: error.message,
+    });
+  }
+  
+});
+
 export default api;

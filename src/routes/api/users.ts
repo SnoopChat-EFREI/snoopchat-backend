@@ -26,6 +26,7 @@ api.get("/", async ({ prisma }, response) => {
   }
 });
 
+
 // Get One user by ID :: [GET] > /api/users/:id
 api.get("/one/", async ({ prisma, user }, response) => {
   try {
