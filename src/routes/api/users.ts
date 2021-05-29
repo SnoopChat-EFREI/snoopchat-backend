@@ -145,21 +145,6 @@ api.get("/me/chats", async (req, response) => {
   }
 });
 
-//POST:: add friend
-api.post("/add/friend", async ({ prisma, user, body }, res) => {
-  try {
-    if (!body.pseudos) {
-      return res.status(400).end();
-    }
-    await prisma.friend.create({
-      data: {
-        user: { connect: body.pseudos },
-        isAccepted: true,
-      },
-    });
-  } catch (error) {}
-});
-
 api.get("/verify-token", (_, res) => {
   res.status(201).end();
 });
