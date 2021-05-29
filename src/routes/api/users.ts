@@ -9,9 +9,9 @@ api.get("/", async ({ prisma }, response) => {
     const users = await prisma.user.findMany({
       include: {
         friend: {
-          include:{
-            user:true
-          }
+          include: {
+            user: true,
+          },
         },
       },
     });
@@ -33,9 +33,9 @@ api.get("/one/", async ({ prisma, user }, response) => {
       where: { id: user.id },
       include: {
         friend: {
-          include:{
-            user:true
-          }
+          include: {
+            user: true,
+          },
         },
       },
     });
@@ -160,8 +160,8 @@ api.post("/add/friend", async ({ prisma, user, body }, res) => {
   } catch (error) {}
 });
 
-api.get("/validate-token", (_, res) => {
-  res.status(201);
+api.get("/verify-token", (_, res) => {
+  res.status(201).end();
 });
 
 export default api;
