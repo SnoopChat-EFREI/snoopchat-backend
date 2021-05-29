@@ -166,7 +166,7 @@ api.get("/addfriend/:pseudo", async ({ prisma, params, user }, response) => {
       },
     });
 
-    prisma.friend.update({
+    await prisma.friend.update({
       where: { id: user2.friendId },
       data: {
         user: {
