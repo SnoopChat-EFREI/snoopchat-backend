@@ -20,12 +20,12 @@ api.get("/", async ({ prisma }, response) => {
   }
 });
 
-api.get("/users/", async ({ prisma, query }, response) => {
+api.get("/:id", async ({ prisma, user }, response) => {
   try {
     const chats = await prisma.chat.findMany({
       where: {
         user: {
-          every: { id: { in: ["SALUT", "SALUT"] } },
+          every: { id: { in: user.id } },
         },
       },
       include: {
@@ -42,6 +42,29 @@ api.get("/users/", async ({ prisma, query }, response) => {
     });
   }
 });
+
+// api.get("/users/", async ({ prisma, query }, response) => {
+//   try {
+//     const chats = await prisma.chat.findMany({
+//       where: {
+//         user: {
+//           every: { id: { in: ["SALUT", "SALUT"] } },
+//         },
+//       },
+//       include: {
+//         user: true,
+//       },
+//     });
+
+//     response.status(200).json({
+//       data: { chats },
+//     });
+//   } catch (error) {
+//     response.status(400).json({
+//       error: error.message,
+//     });
+//   }
+// });
 
 // Get One chat by ID :: [GET] > /api/chats/:id
 api.get("/:id", async ({ prisma, params }, response) => {
