@@ -20,7 +20,7 @@ api.get("/", async ({ prisma }, response) => {
   }
 });
 
-api.get("/:id", async ({ prisma, user }, response) => {
+api.get("/one/", async ({ prisma, user }, response) => {
   try {
     const chats = await prisma.chat.findMany({
       where: {
