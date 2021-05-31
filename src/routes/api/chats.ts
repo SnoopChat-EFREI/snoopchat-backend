@@ -34,10 +34,23 @@ api.get("/one/", async ({ prisma, user }, response) => {
         user: true,
       },
     });
-    console.log("CHAT",chats);
+
+    let initChat = [] 
+
+    chats.forEach(chat => {
+      chat.user.forEach(utilisateurs => {
+        if(utilisateurs.id !== user.id){
+          initChat.push({id: chat.id, utilisateurs})
+        }
+      });
+    });
+    console.log(initChat);
+    
+    
+
     
     response.status(200).json({
-      data: { chats },
+      data: { chats: initChat },
     });
   } catch (error) {
     response.status(400).json({
