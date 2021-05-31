@@ -25,14 +25,15 @@ api.get("/one/", async ({ prisma, user }, response) => {
     const chats = await prisma.chat.findMany({
       where: {
         user: {
-          every: { id: { in: user.id } },
+          every: { id: user.id },
         },
       },
       include: {
         user: true,
       },
     });
-
+    console.log("CHAT",chats);
+    
     response.status(200).json({
       data: { chats },
     });
@@ -92,6 +93,8 @@ api.get("/:id", async ({ prisma, params }, response) => {
 api.post("/", async ({ prisma, body, user }, response) => {
   try {
     const members = [{ id: body.members }, { id: user.id }];
+    console.log(members);
+    
 
     const chat = await prisma.chat.create({
       data: {
