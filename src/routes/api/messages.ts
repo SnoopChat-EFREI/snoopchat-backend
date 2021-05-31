@@ -44,7 +44,6 @@ api.post('/', async (req, response) => {
       field =>
         ![
           'body',
-          'isRead',
           'chatId',
         ].includes(field),
     )
@@ -56,10 +55,10 @@ api.post('/', async (req, response) => {
     }
   
     try {
-      const { body, isRead, chatId } = req.body
+      const { body,  chatId } = req.body
   
       const message = await req.prisma.message.create({
-        data: { body, userId: req.user.id, isRead, chatId },
+        data: { body, userId: req.user.id, isRead: true, chatId },
       })
   
       response.status(200).json({
