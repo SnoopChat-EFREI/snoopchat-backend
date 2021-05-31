@@ -2,20 +2,16 @@ import { Router } from "express";
 
 const api = Router();
 
-// Get One chat by ID :: [GET] > /api/chats/:id
-api.get("/:id", async ({ prisma, params }, response) => {
+api.get("/", async ({ prisma }, response) => {
   try {
-    const chat = await prisma.chat.findUnique({
-      where: { id: Number(params.id) },
+    const chats = await prisma.chat.findMany({
+      include: {
+        user: true,
+      },
     });
-    if (!chat) {
-      return response.status(400).json({
-        error: `Unknown resource with id:${params.id}`,
-      });
-    }
 
     response.status(200).json({
-      data: { chat },
+      data: { chats },
     });
   } catch (error) {
     response.status(400).json({
@@ -24,10 +20,95 @@ api.get("/:id", async ({ prisma, params }, response) => {
   }
 });
 
-// Create One chat :: [POST] > /api/chats
-api.post("/", async ({ prisma, body }, response) => {
+api.get("/one/", async ({ prisma, user }, response) => {
+  console.log(user.id);
+  
   try {
-    const { members } = body;
+    const chats = await prisma.chat.findMany({
+      where: {
+        user: {
+          some: { id: user.id },
+        },
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    let initChat = [] 
+
+    chats.forEach(chat => {
+      chat.user.forEach(utilisateurs => {
+        if(utilisateurs.id !== user.id){
+          initChat.push({id: chat.id, utilisateurs})
+        }
+      });
+    });
+    console.log(initChat);
+    
+    
+
+    
+    response.status(200).json({
+      data: { chats: initChat },
+    });
+  } catch (error) {
+    response.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+// api.get("/users/", async ({ prisma, query }, response) => {
+//   try {
+//     const chats = await prisma.chat.findMany({
+//       where: {
+//         user: {
+//           every: { id: { in: ["SALUT", "SALUT"] } },
+//         },
+//       },
+//       include: {
+//         user: true,
+//       },
+//     });
+
+//     response.status(200).json({
+//       data: { chats },
+//     });
+//   } catch (error) {
+//     response.status(400).json({
+//       error: error.message,
+//     });
+//   }
+// });
+
+// Get One chat by ID :: [GET] > /api/chats/:id
+// api.get("/:id", async ({ prisma, params }, response) => {
+//   try {
+//     const chat = await prisma.chat.findUnique({
+//       where: { id: Number(params.id) },
+//     });
+//     if (!chat) {
+//       return response.status(400).json({
+//         error: `Unknown resource with id:${params.id}`,
+//       });
+//     }
+
+//     response.status(200).json({
+//       data: { chat },
+//     });
+//   } catch (error) {
+//     response.status(400).json({
+//       error: error.message,
+//     });
+//   }
+// });
+
+// Create One chat :: [POST] > /api/chats
+api.post("/", async ({ prisma, body, user }, response) => {
+  try {
+    const members = [{ id: body.members }, { id: user.id }];
+    
 
     const chat = await prisma.chat.create({
       data: {
@@ -42,7 +123,7 @@ api.post("/", async ({ prisma, body }, response) => {
     });
   } catch (error) {
     response.status(400).json({
-      error: error.message,
+      error
     });
   }
 });

@@ -10,7 +10,11 @@ api.get("/", async ({ prisma }, response) => {
       include: {
         friend: {
           include: {
-            user: true,
+            user: {
+              include: {
+                geolocalisation: true,
+              },
+            },
           },
         },
       },
@@ -34,7 +38,11 @@ api.get("/one/", async ({ prisma, user }, response) => {
       include: {
         friend: {
           include: {
-            user: true,
+            user: {
+              include: {
+                geolocalisation: true,
+              },
+            },
           },
         },
       },
