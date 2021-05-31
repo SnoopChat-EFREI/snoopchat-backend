@@ -25,14 +25,14 @@ api.get("/:id", async ({ prisma, params }, response) => {
 });
 
 // Create One chat :: [POST] > /api/chats
-api.post("/", async ({ prisma, body }, response) => {
+api.post("/", async ({ prisma, body, user }, response) => {
   try {
-    const { members } = body;
+    const members = [{id: body.members},{id: user.id}];
 
     const chat = await prisma.chat.create({
       data: {
         user: {
-          connect: members,
+          connect: members
         },
       },
     });
