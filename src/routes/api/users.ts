@@ -9,9 +9,13 @@ api.get("/", async ({ prisma }, response) => {
     const users = await prisma.user.findMany({
       include: {
         friend: {
-          include:{
-            user:true
-          }
+          include: {
+            user: {
+              include: {
+                geolocalisation: true,
+              },
+            },
+          },
         },
       },
     });
@@ -26,7 +30,6 @@ api.get("/", async ({ prisma }, response) => {
   }
 });
 
-
 // Get One user by ID :: [GET] > /api/users/:id
 api.get("/one/", async ({ prisma, user }, response) => {
   try {
@@ -34,9 +37,13 @@ api.get("/one/", async ({ prisma, user }, response) => {
       where: { id: user.id },
       include: {
         friend: {
-          include:{
-            user:true
-          }
+          include: {
+            user: {
+              include: {
+                geolocalisation: true,
+              },
+            },
+          },
         },
       },
     });

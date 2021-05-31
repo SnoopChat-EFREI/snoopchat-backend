@@ -6,7 +6,30 @@ api.get("/", async ({ prisma }, response) => {
   try {
     const chats = await prisma.chat.findMany({
       include: {
-        user: true
+        user: true,
+      },
+    });
+
+    response.status(200).json({
+      data: { chats },
+    });
+  } catch (error) {
+    response.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+api.get("/users/", async ({ prisma, query }, response) => {
+  try {
+    const chats = await prisma.chat.findMany({
+      where: {
+        user: {
+          every: { id: { in: ["SALUT", "SALUT"] } },
+        },
+      },
+      include: {
+        user: true,
       },
     });
 
@@ -45,12 +68,12 @@ api.get("/:id", async ({ prisma, params }, response) => {
 // Create One chat :: [POST] > /api/chats
 api.post("/", async ({ prisma, body, user }, response) => {
   try {
-    const members = [{id: body.members},{id: user.id}];
+    const members = [{ id: body.members }, { id: user.id }];
 
     const chat = await prisma.chat.create({
       data: {
         user: {
-          connect: members
+          connect: members,
         },
       },
     });
