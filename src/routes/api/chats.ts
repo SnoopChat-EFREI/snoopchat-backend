@@ -93,7 +93,6 @@ api.get("/:id", async ({ prisma, params }, response) => {
 api.post("/", async ({ prisma, body, user }, response) => {
   try {
     const members = [{ id: body.members }, { id: user.id }];
-    console.log(members);
     
 
     const chat = await prisma.chat.create({
@@ -109,7 +108,7 @@ api.post("/", async ({ prisma, body, user }, response) => {
     });
   } catch (error) {
     response.status(400).json({
-      error: error.message,
+      error
     });
   }
 });
