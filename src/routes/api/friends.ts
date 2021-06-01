@@ -21,29 +21,29 @@ api.get("/", async ({ prisma }, response) => {
   }
 });
 
-api.get("/:id", async ({ prisma, params }, response) => {
-  try {
-    const friend = await prisma.friend.findUnique({
-      where: { id: Number(params.id) },
-      include: {
-        user: true,
-      },
-    });
-    if (!friend) {
-      return response.status(400).json({
-        error: `Unknown resource`,
-      });
-    }
+// api.get("/:id", async ({ prisma, params }, response) => {
+//   try {
+//     const friend = await prisma.friend.findUnique({
+//       where: { id: Number(params.id) },
+//       include: {
+//         user: true,
+//       },
+//     });
+//     if (!friend) {
+//       return response.status(400).json({
+//         error: `Unknown resource`,
+//       });
+//     }
 
-    response.status(200).json({
-      data: { friend },
-    });
-  } catch (error) {
-    response.status(400).json({
-      error: error.message,
-    });
-  }
-});
+//     response.status(200).json({
+//       data: { friend },
+//     });
+//   } catch (error) {
+//     response.status(400).json({
+//       error: error.message,
+//     });
+//   }
+// });
 
 api.delete("/:id", async ({ prisma, params }, response) => {
   try {
@@ -135,14 +135,7 @@ api.put("/:id", async ({ prisma, params, body }, response) => {
 
 api.get("/addfriend/:pseudo", async ({ prisma, params, user }, response) => {
   try {
-    const user1 = await prisma.user.findUnique({
-      where: {
-        id: user.id,
-      },
-      select: {
-        friendId: true,
-      },
-    });
+    
 
     const user2 = await prisma.user.findUnique({
       where: {
@@ -150,35 +143,24 @@ api.get("/addfriend/:pseudo", async ({ prisma, params, user }, response) => {
       },
       select: {
         id: true,
-        friendId: true,
       },
     });
 
     
-    const friend = await prisma.friend.update({
-      where: { id: user1.friendId },
+    const friend1 = await prisma.friend.create({
       data: {
         user: {
-          connect: {
-              id: user2.id
-          },
+          connect: [{ id: user.id }, { id: user2.id }]
         },
       },
     });
 
-    await prisma.friend.update({
-      where: { id: user2.friendId },
-      data: {
-        user: {
-          connect: {
-              id: user.id
-          },
-        },
-      },
-    });
+    console.log("FRIEND 1 :",friend1);
+    
+    
 
     response.status(201).json({
-      data: { friend },
+      data: { friend1 },
     });
 
   } catch (error) {

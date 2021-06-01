@@ -20,8 +20,7 @@ model User {
   picture           String
   geolocalisationId Int?
   geolocalisation   Geolocalisation? @relation(fields: [geolocalisationId], references: [id])
-  friendId          Int?
-  friend            Friend?          @relation(fields: [friendId], references: [id])
+  friends           Friend[]
   message           Message[]
   chat              Chat[]
 }

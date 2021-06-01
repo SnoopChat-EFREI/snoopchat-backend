@@ -8,7 +8,7 @@ api.get("/", async ({ prisma }, response) => {
   try {
     const users = await prisma.user.findMany({
       include: {
-        friend: {
+        friends: {
           include: {
             user: {
               include: {
@@ -36,7 +36,7 @@ api.get("/one/", async ({ prisma, user }, response) => {
     const userFind = await prisma.user.findUnique({
       where: { id: user.id },
       include: {
-        friend: {
+        friends: {
           include: {
             user: {
               include: {

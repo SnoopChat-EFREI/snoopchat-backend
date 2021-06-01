@@ -8,7 +8,6 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "picture" TEXT NOT NULL,
     "geolocalisationId" INTEGER,
-    "friendId" INTEGER,
 
     PRIMARY KEY ("id")
 );
@@ -48,6 +47,12 @@ CREATE TABLE "Message" (
 );
 
 -- CreateTable
+CREATE TABLE "_FriendToUser" (
+    "A" INTEGER NOT NULL,
+    "B" TEXT NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "_ChatToUser" (
     "A" INTEGER NOT NULL,
     "B" TEXT NOT NULL
@@ -60,6 +65,12 @@ CREATE UNIQUE INDEX "User.eMail_unique" ON "User"("eMail");
 CREATE UNIQUE INDEX "User.pseudo_unique" ON "User"("pseudo");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "_FriendToUser_AB_unique" ON "_FriendToUser"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_FriendToUser_B_index" ON "_FriendToUser"("B");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_ChatToUser_AB_unique" ON "_ChatToUser"("A", "B");
 
 -- CreateIndex
@@ -69,13 +80,16 @@ CREATE INDEX "_ChatToUser_B_index" ON "_ChatToUser"("B");
 ALTER TABLE "User" ADD FOREIGN KEY ("geolocalisationId") REFERENCES "Geolocalisation"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "User" ADD FOREIGN KEY ("friendId") REFERENCES "Friend"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Message" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Message" ADD FOREIGN KEY ("chatId") REFERENCES "Chat"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_FriendToUser" ADD FOREIGN KEY ("A") REFERENCES "Friend"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_FriendToUser" ADD FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_ChatToUser" ADD FOREIGN KEY ("A") REFERENCES "Chat"("id") ON DELETE CASCADE ON UPDATE CASCADE;
