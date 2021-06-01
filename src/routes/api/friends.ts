@@ -154,8 +154,6 @@ api.get("/addfriend/:pseudo", async ({ prisma, params, user }, response) => {
         },
       },
     });
-
-    console.log("FRIEND 1 :",friend1);
     
     
 
