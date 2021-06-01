@@ -9,8 +9,10 @@ import {
   hashPassword,
   authenticateToken,
 } from "./middlewares/auth";
+/* import { mailer } from "./helpers/mailjet"; */
 import routes from "./routes";
 import { injectPrisma } from "./middlewares/inject-prisma";
+import mailer from "./helpers/mailjet";
 
 export function launch(port: number): void {
   const application = express();
@@ -76,10 +78,10 @@ export function launch(port: number): void {
       });
       const userCreated = await prisma.user.findUnique({
         where: {
-          pseudo, 
+          pseudo,
         },
       });
-      console.log(":: NOUV USER : ", userCreated);
+      console.log(":: NOUV USER : ", userCreated.pseudo);
 
       const geo = await prisma.geolocalisation.create({
         data: {
@@ -90,7 +92,15 @@ export function launch(port: number): void {
           },
         },
       });
-      console.log(geo);
+      
+      const name = firstName + " " + lastName;
+      mailer(eMail, name, pseudo)
+        .then((result) => {
+          console.log(result.body);
+        })
+        .catch((err) => {
+          console.log(err.statusCode);
+        });
 
       res.status(200).end();
     } catch (error) {

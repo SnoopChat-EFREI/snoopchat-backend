@@ -27,7 +27,6 @@ api.get("/", async ({ prisma, user }, response) => {
 
 // Update One geolocalisation :: [PUT] > /api/geolocalisations/:id
 api.put("/", async ({ prisma, user, body }, response) => {
-  console.log(body);
 
   const geolocalisation = await prisma.geolocalisation.findUnique({
     where: { id: user.locId },

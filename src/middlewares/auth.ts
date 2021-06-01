@@ -10,7 +10,7 @@ export function generateAccessToken(
   locId: number
 ) {
   return jwt.sign({ username, id, locId }, process.env.TOKEN_SECRET, {
-    expiresIn: "1800s",
+    expiresIn: "3600s",
   });
 }
 
@@ -26,7 +26,7 @@ export function authenticateToken(req, res, next) {
     token,
     process.env.TOKEN_SECRET as string,
     (err: any, user: any) => {
-      console.log("::ERROR ", err);
+      console.log("::WARNING -> JWT expired/malformed ");
 
       if (err) return res.sendStatus(403);
 

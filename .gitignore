@@ -7,7 +7,10 @@ yarn-error.log*
 lerna-debug.log*
 .dist
 package-lock.json
+<<<<<<< HEAD
 
+=======
+>>>>>>> a6e1ee2c41f1d675d65a292549a7184d652a7314
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
