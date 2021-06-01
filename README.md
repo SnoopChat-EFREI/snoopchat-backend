@@ -8,7 +8,15 @@ BDD
 
 START
 
-`yarn` || `nodemon`
+if you're using npm : `npm i` 
+
+yarn : `yarn`
+
+and starting 
+
+npm -> `nodemon`
+
+yarn -> `yarn`
 
 ARCHITECTURE
 
