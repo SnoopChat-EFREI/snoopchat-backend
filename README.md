@@ -12,7 +12,8 @@ START
 
 ARCHITECTURE
 
-  :contain: 
+* contain:
+ 
 `/backend/prisma :~` -> migrations, prisma.schema
 
 `/backend/src :~` -> helpers, middlewares, routes, main.ts, server.ts
