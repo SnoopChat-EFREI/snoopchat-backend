@@ -44,7 +44,6 @@ api.get("/one/", async ({ prisma, user }, response) => {
         }
       });
     });
-    console.log(initChat);
     
     
 

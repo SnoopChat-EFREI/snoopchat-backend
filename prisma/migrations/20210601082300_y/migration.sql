@@ -30,6 +30,14 @@ CREATE TABLE "Friend" (
 );
 
 -- CreateTable
+CREATE TABLE "FriendList" (
+    "id" SERIAL NOT NULL,
+    "user" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Chat" (
     "id" SERIAL NOT NULL,
 

@@ -17,7 +17,6 @@ export function generateAccessToken(
 export function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  console.log(token);
 
   if (token == null) {
     return res.sendStatus(401);
@@ -27,7 +26,7 @@ export function authenticateToken(req, res, next) {
     token,
     process.env.TOKEN_SECRET as string,
     (err: any, user: any) => {
-      console.log("::ERROR ", err);
+      console.log("::WARNING -> JWT expired/malformed ");
 
       if (err) return res.sendStatus(403);
 

@@ -38,6 +38,11 @@ model Friend {
   user       User[]
 }
 
+model FriendList {
+  id  Int @id @default(autoincrement())
+  user String
+}
+
 model Chat {
   id      Int       @id @default(autoincrement())
   user    User[] 

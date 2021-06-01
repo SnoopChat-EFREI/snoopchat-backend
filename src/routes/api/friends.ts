@@ -134,8 +134,8 @@ api.put("/:id", async ({ prisma, params, body }, response) => {
 });
 
 api.get("/addfriend/:pseudo", async ({ prisma, params, user }, response) => {
-  try {
-    const user1 = await prisma.user.findUnique({
+  try {    
+    const client = await prisma.user.findUnique({
       where: {
         id: user.id,
       },
@@ -144,7 +144,7 @@ api.get("/addfriend/:pseudo", async ({ prisma, params, user }, response) => {
       },
     });
 
-    const user2 = await prisma.user.findUnique({
+    const friend = await prisma.user.findUnique({
       where: {
         pseudo: params.pseudo,
       },
@@ -155,19 +155,20 @@ api.get("/addfriend/:pseudo", async ({ prisma, params, user }, response) => {
     });
 
     
-    const friend = await prisma.friend.update({
-      where: { id: user1.friendId },
+    //:: ---------- friends relations updating
+    await prisma.friend.update({
+      where: { id: client.friendId },
       data: {
         user: {
           connect: {
-              id: user2.id
+              id: friend.id
           },
         },
       },
     });
 
     await prisma.friend.update({
-      where: { id: user2.friendId },
+      where: { id: friend.friendId },
       data: {
         user: {
           connect: {
@@ -177,11 +178,23 @@ api.get("/addfriend/:pseudo", async ({ prisma, params, user }, response) => {
       },
     });
 
-    response.status(201).json({
-      data: { friend },
+    const friendTest = await prisma.user.findUnique({
+      where: { id: user.id },
+      include: {
+        friend: {
+          include: {
+            user: true
+          },
+        },
+      },
     });
+    console.log("friendTest----------->", friendTest);
+  
+    response.status(201).end();
 
   } catch (error) {
+    console.log(error);
+    
     response.status(400).json({
       error: error.message,
     });
