@@ -18,42 +18,4 @@ model User {
   pseudo            String           @unique
   password          String
   picture           String
-  geolocalisationId Int?
-  geolocalisation   Geolocalisation? @relation(fields: [geolocalisationId], references: [id])
-  friends           Friend[]
-  message           Message[]
-  chat              Chat[]
-}
-
-model Geolocalisation {
-  id         Int     @id @default(autoincrement())
-  coordonate String
-  display    Boolean
-  user       User[]
-}
-
-model Friend {
-  id         Int     @id @default(autoincrement())
-  user       User[]
-}
-
-model FriendList {
-  id  Int @id @default(autoincrement())
-  user String
-}
-
-model Chat {
-  id      Int       @id @default(autoincrement())
-  user    User[] 
-  message Message[]
-}
-
-model Message {
-  id     Int     @id @default(autoincrement())
-  body   String
-  userId String
-  isRead Boolean
-  user   User    @relation(fields: [userId], references: [id])
-  chatId Int
-  chat   Chat    @relation(fields: [chatId], references: [id])
 }

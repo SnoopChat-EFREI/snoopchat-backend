@@ -1,18 +1,12 @@
 import { Router } from "express";
+import { authenticateToken } from "../../middlewares/auth";
 
+import anthentification from './anthentification'
+import secured from './secured'
 
-import users from "./users";
-import friends from "./friends";
-import geolocalisations from "./geolocalisations";
-import chats from "./chats";
-import messages from "./messages"
+const routes = Router()
 
-const api = Router();
+routes.use('/anthentification', anthentification)
+routes.use("/", authenticateToken, secured);
 
-api.use("/users", users);
-api.use("/friends", friends);
-api.use("/geolocalisations", geolocalisations);
-api.use("/chats", chats);
-api.use("/messages", messages);
-
-export default api;
+export default routes;

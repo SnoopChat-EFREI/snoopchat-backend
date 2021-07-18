@@ -1,24 +1,12 @@
 import { Router } from "express";
-import { generateAccessToken } from "../../middlewares/auth";
+import { generateAccessToken } from "../../../middlewares/auth";
 
 const api = Router();
 
 // Get All Users :: [GET] > /api/users
 api.get("/", async ({ prisma }, response) => {
   try {
-    const users = await prisma.user.findMany({
-      include: {
-        friends: {
-          include: {
-            user: {
-              include: {
-                geolocalisation: true,
-              },
-            },
-          },
-        },
-      },
-    });
+    const users = await prisma.user.findMany();
 
     response.status(200).json({
       data: { users },
@@ -35,17 +23,6 @@ api.get("/one/", async ({ prisma, user }, response) => {
   try {
     const userFind = await prisma.user.findUnique({
       where: { id: user.id },
-      include: {
-        friends: {
-          include: {
-            user: {
-              include: {
-                geolocalisation: true,
-              },
-            },
-          },
-        },
-      },
     });
     if (!userFind) {
       return response.status(400).json({
@@ -106,7 +83,6 @@ api.put("/:id", async ({ prisma, params, body }, response) => {
       pseudo,
       password,
       picture,
-      geolocalisationId,
     } = body;
 
     const updateduser = await prisma.user.update({
@@ -118,33 +94,11 @@ api.put("/:id", async ({ prisma, params, body }, response) => {
         pseudo: pseudo || user.pseudo,
         password: password || user.password,
         picture: picture || user.picture,
-        geolocalisationId: geolocalisationId || user.geolocalisationId,
       },
     });
 
     response.status(201).json({
       data: { user: updateduser },
-    });
-  } catch (error) {
-    response.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-api.get("/me/chats", async (req, response) => {
-  try {
-    const { chat } = await req.prisma.user.findUnique({
-      where: {
-        id: req.user.id,
-      },
-      select: {
-        chat: true,
-      },
-    });
-
-    response.status(200).json({
-      data: { chat },
     });
   } catch (error) {
     response.status(400).json({
