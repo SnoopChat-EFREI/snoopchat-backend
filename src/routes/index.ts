@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { authenticateToken } from "../middlewares/auth";
 import api from "./api";
 
 const routes = Router();
 // routes.use("/api", api);
-routes.use("/api", authenticateToken, api);
+routes.use("/api", api);
 
 export default routes;

@@ -15,6 +15,7 @@ const api = Router();
 
 api.post("/login", async ({ prisma, body }, res) => {
     try {
+      console.log("token");
       if (!body.username || !body.password) {
         return res.status(400).end();
       }
@@ -37,6 +38,7 @@ api.post("/login", async ({ prisma, body }, res) => {
         body.username,
         user.id
       );
+      
       res.status(200).json({
         token,
       });

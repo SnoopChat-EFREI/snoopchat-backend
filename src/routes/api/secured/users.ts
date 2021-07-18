@@ -19,7 +19,7 @@ api.get("/", async ({ prisma }, response) => {
 });
 
 // Get One user by ID :: [GET] > /api/users/:id
-api.get("/one/", async ({ prisma, user }, response) => {
+api.get("/:id", async ({ prisma, user }, response) => {
   try {
     const userFind = await prisma.user.findUnique({
       where: { id: user.id },
